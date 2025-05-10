@@ -24,6 +24,6 @@ Use at your own risk. I do not support piracy and encourage supporting developer
 
 ## 🖥️ How to run / Как запустить
 
-Download and run the `.app` file.
+Download and run the `.app` file (dist folder).
 
-Скачайте и запустите `.app` файл.
+Скачайте и запустите `.app` файл (папка dist).

@@ -1,3 +1,4 @@
+import getpass
 import os
 import plistlib
 import subprocess
@@ -92,21 +93,25 @@ def update_reg(path: str, block_to_skip: str) -> None:
 
 def main() -> None:
     """Main function to execute the script."""
-    current_user = os.getlogin()
+    try:
+        current_user = getpass.getuser()
 
-    plist_path = f'/Users/{current_user}/Library/Preferences/com.codeweavers.CrossOver.plist'
-    reg_path = f'/Users/{current_user}/Library/Application Support/CrossOver/Bottles/Steam/system.reg'
-    reg_key = '[Software\\\\CodeWeavers\\\\CrossOver\\\\cxoffice]'
+        plist_path = f'/Users/{current_user}/Library/Preferences/com.codeweavers.CrossOver.plist'
+        reg_path = f'/Users/{current_user}/Library/Application Support/CrossOver/Bottles/Steam/system.reg'
+        reg_key = '[Software\\\\CodeWeavers\\\\CrossOver\\\\cxoffice]'
 
-    # Extend the trial period
-    update_plist(plist_path)
-    update_reg(reg_path, reg_key)
+        # Extend the trial period
+        update_plist(plist_path)
+        update_reg(reg_path, reg_key)
 
-    # Run CrossOver
-    subprocess.run(['usr/bin/open', '/Applications/CrossOver.app'])  # noqa: PLW1510, S603, S607
+        # Run CrossOver
+        subprocess.run(['/usr/bin/open', '/Applications/CrossOver.app'])  # noqa: PLW1510, S603, S607
 
-    # Exit
-    sys.exit(0)
+        # Exit
+        sys.exit(0)
+    except Exception as e:
+        script = f'display dialog "{e}" with title "error" buttons ["OK"] with icon stop'
+        subprocess.run(["osascript", "-e", script])
 
 
 if __name__ == '__main__':
